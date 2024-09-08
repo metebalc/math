@@ -1,0 +1,57 @@
+#include <iostream>
+#include <cmath>
+#include <functional>
+#include <limits>
+
+using namespace std;
+typedef std::function<long double(long double)>cFunction; //just func
+typedef std::function<long double(std::function<long double(long double)>, long double)> dFunction; //derivativeFunction
+
+long double derivative(cFunction f, long double x)
+{
+    double h = sqrt(std::numeric_limits<double>::epsilon());
+    //const long double precision_h = 1.0e-09;
+    return (f(x + h) - f(x - h)) / (2.0 * h);
+}
+long double func(long double x)
+{
+    return (x*x*x*x*x - 336);
+}
+
+
+long double newtonRaphson(cFunction f, dFunction d, long double guess = 2.0, long double accuracy = 1.0e-09) //Newton-Raphson Method
+{
+    long double x = guess;
+
+    for (size_t i = 0; i < 1.0e06 ; ++i)
+    {
+        long double fx = f(x);
+        long double fx_prime = d(f, x);
+
+        if (fabs(fx_prime) < accuracy)
+        {
+            cout << "Derivative is too small.\n";
+            return x;
+        }
+
+        x = x - (fx / fx_prime); // d(f, x) = f'(x)
+
+        if (fabs(fx) < accuracy)  //fabs is for floating absolute
+        {
+            //cout << i << "times iteration\n";
+            return x;
+        }
+    }
+
+    cout << "Newton-Raphson did not converge within the maximum number of iterations.\n Last iteration at 1.0e06 was: ";
+    return x;
+}
+
+int main()
+{
+    cFunction f = func;
+    dFunction d = derivative;
+
+    std::cout << newtonRaphson(f, d) << "\n";
+
+}
