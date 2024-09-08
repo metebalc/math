@@ -1,0 +1,31 @@
+#include <iostream>
+#include <cmath>
+#include <functional>
+#include <limits>
+
+using namespace std;
+
+void collatzConjecture(int value) //3n+1 Problem
+{
+    int amount_times = 0, maxValue = value;
+    const int copyNum = value;
+
+    while (value != 1)
+    {
+        if (value % 2 == 1)
+        {
+            value *= 3;
+            value += 1;
+        }
+        else
+            value /= 2;
+
+        if (maxValue < value)
+            maxValue = value;
+
+        ++amount_times;
+    }
+
+    cout << "It took " << amount_times << " steps for " << copyNum << " to hit 1.\n";
+    cout << "Max value of these steps is: " << maxValue;
+}
