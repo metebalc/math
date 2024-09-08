@@ -1,0 +1,18 @@
+#include <iostream>
+#include <cmath>
+#include <functional>
+#include <limits>
+
+using namespace std;
+
+long double power(long double num, long double times, int precision = 1000) //Applies Taylor Series to find
+{
+    long double result = 1.0;
+    long double log_n = std::log(num);
+
+    for (int i = precision; i > 0; --i)
+    {
+        result = 1 + result * times * log_n / i; //Taylor Series approx.
+    }
+    return result;
+}
